@@ -1,0 +1,16 @@
+{
+  "name": "langmuir-hub",
+  "version": "0.1.0",
+  "description": "Central portal linking to all Langmuir Systems internal tools.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Langmuir Systems · Hub</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a1e24; color: #fff; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* ─── Header (matches procurement / production / KPI aesthetic) ─── */
+  .header { background: #12151a; border-bottom: 3px solid #C8102E; padding: 0 28px; display: flex; align-items: stretch; justify-content: space-between; min-height: 72px; }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .brand-icon { width: 44px; height: 44px; background: #C8102E; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 20px; color: #fff; flex-shrink: 0; }
+  .brand-text .top { font-size: 10px; font-weight: 700; color: #C8102E; letter-spacing: 0.15em; text-transform: uppercase; }
+  .brand-text .btm { font-size: 19px; font-weight: 800; color: #fff; letter-spacing: 0.06em; text-transform: uppercase; }
+  .header-right { display: flex; align-items: center; gap: 20px; }
+  .datetime .date  { font-size: 11px; color: #6b7280; text-align: right; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; }
+  .datetime .clock { font-size: 18px; font-weight: 700; color: #fff; text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ─── Page body ─── */
+  .page { flex: 1; padding: 36px 28px; max-width: 1280px; margin: 0 auto; width: 100%; }
+  .lede { font-size: 14px; color: #9ca3af; max-width: 760px; line-height: 1.55; margin-bottom: 36px; }
+
+  /* ─── Section headings ─── */
+  .section-label { font-size: 10px; font-weight: 800; color: #6b7280; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 14px; margin-top: 8px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, #2d3340, transparent); }
+  .section-label:not(:first-of-type) { margin-top: 32px; }
+
+  /* ─── Nav cards ─── */
+  .nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
+  .nav-card {
+    background: #12151a;
+    border: 1px solid #2d3340;
+    border-left: 4px solid var(--accent, #C8102E);
+    border-radius: 8px;
+    padding: 22px 24px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.12s, border-color 0.12s, background 0.12s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .nav-card:hover { border-color: var(--accent, #C8102E); background: #161a21; transform: translateY(-1px); }
+  .nav-card:hover .nav-card-icon { transform: scale(1.05); }
+  .nav-card:hover .nav-card-arrow { transform: translateX(3px); color: var(--accent, #C8102E); }
+  .nav-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+  .nav-card-icon {
+    width: 30px; height: 30px;
+    background: var(--accent, #C8102E);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 14px; color: #fff;
+    flex-shrink: 0;
+    transition: transform 0.12s;
+  }
+  .nav-card-title { font-size: 15px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.06em; }
+  .nav-card-desc { font-size: 12px; color: #9ca3af; line-height: 1.5; }
+  .nav-card-url { font-size: 10px; color: #6b7280; font-family: 'SF Mono', Menlo, monospace; margin-top: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .nav-card-arrow { position: absolute; top: 22px; right: 20px; font-size: 16px; color: #374151; transition: transform 0.12s, color 0.12s; }
+
+  /* Per-card accent colors */
+  .accent-red    { --accent: #C8102E; }
+  .accent-orange { --accent: #EF9F27; }
+  .accent-cyan   { --accent: #38bdf8; }
+
+  /* ─── Footer ─── */
+  .footer { padding: 14px 28px; border-top: 1px solid #2d3340; background: #12151a; color: #6b7280; font-size: 11px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 0.06em; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-left">
+      <div class="brand-icon">L</div>
+      <div class="brand-text">
+        <div class="top">Langmuir Systems</div>
+        <div class="btm">Operations Hub</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="datetime">
+        <div class="date" id="date"></div>
+        <div class="clock" id="clock"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="lede">
+      Central portal for all Langmuir Systems internal tools. Production monitoring, line and warehouse requests, procurement, and tooling — all in one place.
+    </div>
+
+    <div class="section-label">Production</div>
+    <div class="nav-grid">
+
+      <a class="nav-card accent-red" href="https://langmuirproduction.up.railway.app" target="_blank" rel="noopener">
+        <div class="nav-card-head">
+          <div class="nav-card-icon">A</div>
+          <div class="nav-card-title">Apollo Production Board</div>
+        </div>
+        <div class="nav-card-desc">Monitoring Apollo production cycles and Andon requests.</div>
+        <div class="nav-card-url">langmuirproduction.up.railway.app</div>
+        <div class="nav-card-arrow">→</div>
+      </a>
+
+      <a class="nav-card accent-orange" href="https://langmuirproduction.up.railway.app/titan.html" target="_blank" rel="noopener">
+        <div class="nav-card-head">
+          <div class="nav-card-icon">T</div>
+          <div class="nav-card-title">Titan Production Board</div>
+        </div>
+        <div class="nav-card-desc">Monitoring Titan production cycles and Andon requests.</div>
+        <div class="nav-card-url">langmuirproduction.up.railway.app/titan.html</div>
+        <div class="nav-card-arrow">→</div>
+      </a>
+
+      <a class="nav-card accent-cyan" href="https://langmuirproductionkpi-production.up.railway.app" target="_blank" rel="noopener">
+        <div class="nav-card-head">
+          <div class="nav-card-icon">K</div>
+          <div class="nav-card-title">Production KPI Board</div>
+        </div>
+        <div class="nav-card-desc">Monitoring factory production rates versus goals across all lines.</div>
+        <div class="nav-card-url">langmuirproductionkpi-production.up.railway.app</div>
+        <div class="nav-card-arrow">→</div>
+      </a>
+
+      <a class="nav-card accent-red" href="https://langmuirproduction.up.railway.app/line.html?line=Apollo" target="_blank" rel="noopener">
+        <div class="nav-card-head">
+          <div class="nav-card-icon">L</div>
+          <div class="nav-card-title">Line Request Page</div>
+        </div>
+        <div class="nav-card-desc">Where operators can request inventory to their assigned area.</div>
+        <div class="nav-card-url">langmuirproduction.up.railway.app/line.html</div>
+        <div class="nav-card-arrow">→</div>
+      </a>
+
+      <a class="nav-card accent-red" href="https://langmuirproduction.up.railway.app/picker.html" target="_blank" rel="noopener">
+        <div class="nav-card-head">
+          <div class="nav-card-icon">W</div>
+          <div class="nav-card-title">Warehouse Page</div>
+        </div>
+        <div class="nav-card-desc">For fulfilling pick requests, and for stowing and transferring inventory.</div>
+        <div class="nav-card-url">langmuirproduction.up.railway.app/picker.html</div>
+        <div class="nav-card-arrow">→</div>
+      </a>
+
+    </div>
+
+    <div class="section-label">Procurement &amp; Purchasing</div>
+    <div class="nav-grid">
+
+      <a class="nav-card accent-red" href="https://langmuir-procurement.up.railway.app" target="_blank" rel="noopener">
+        <div class="nav-card-head">
+          <div class="nav-card-icon">P</div>
+          <div class="nav-card-title">Procurement Board</div>
+        </div>
+        <div class="nav-card-desc">Monitoring at-risk and stocked-out inventory, reorder points, and supplier lead times.</div>
+        <div class="nav-card-url">langmuir-procurement.up.railway.app</div>
+        <div class="nav-card-arrow">→</div>
+      </a>
+
+      <a class="nav-card accent-red" href="https://langmuir-tooling.up.railway.app/request" target="_blank" rel="noopener">
+        <div class="nav-card-head">
+          <div class="nav-card-icon">R</div>
+          <div class="nav-card-title">Tooling Request</div>
+        </div>
+        <div class="nav-card-desc">For operators to request tooling and off-the-shelf items from purchasing.</div>
+        <div class="nav-card-url">langmuir-tooling.up.railway.app/request</div>
+        <div class="nav-card-arrow">→</div>
+      </a>
+
+      <a class="nav-card accent-red" href="https://langmuir-tooling.up.railway.app/queue" target="_blank" rel="noopener">
+        <div class="nav-card-head">
+          <div class="nav-card-icon">Q</div>
+          <div class="nav-card-title">Tooling Purchasers</div>
+        </div>
+        <div class="nav-card-desc">For purchasers to review tooling requests coming from operators.</div>
+        <div class="nav-card-url">langmuir-tooling.up.railway.app/queue</div>
+        <div class="nav-card-arrow">→</div>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <div>v0.1 · Langmuir Systems Operations Hub</div>
+    <div id="health">—</div>
+  </div>
+
+  <script>
+    function tickClock() {
+      const now = new Date();
+      const d = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      const t = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+      document.getElementById('date').textContent = d.toUpperCase();
+      document.getElementById('clock').textContent = t;
+    }
+    tickClock(); setInterval(tickClock, 30000);
+
+    fetch('/api/health').then(r => r.json()).then(j => {
+      document.getElementById('health').textContent = j.ok ? 'Server OK' : 'Server reachable';
+    }).catch(() => { document.getElementById('health').textContent = 'Server check failed'; });
+  </script>
+</body>
+</html>
